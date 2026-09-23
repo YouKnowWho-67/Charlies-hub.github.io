@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+  // Apply theme BEFORE page renders
+  (function() {
+    const theme = localStorage.getItem('siteTheme') || 'dark';
+    if (theme === 'light') document.documentElement.classList.add('theme-light');
+    if (theme === 'neon') document.documentElement.classList.add('theme-neon');
+    if (theme === 'spring') document.documentElement.classList.add('theme-spring');
+    if (theme === 'summer') document.documentElement.classList.add('theme-summer');
+    if (theme === 'autumn') document.documentElement.classList.add('theme-autumn');
+    if (theme === 'winter') document.documentElement.classList.add('theme-winter');
+  })();
+</script>
+<script src="../notification-helper.js"></script>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column; /* stack header + box */
+    justify-content: center;
+    align-items: center;
+
+    background:
+      linear-gradient(rgba(50,50,50,0.8), rgba(50,50,50,0.8)),
+      url("https://i.pinimg.com/originals/11/cf/ee/11cfeef9eaa56c71a6eeb9933f933492.gif");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+  }
+
+  /* TOP HEADER (outside the box) */
+  .page-header {
+    position: absolute;
+    top: 40px;
+    font-size: 2rem;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 0 0 12px rgba(255,255,255,0.6);
+  }
+
+  .bible-widget-root {
+    background: rgba(140,140,140,0.22);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-radius: 22px;
+    padding: 28px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,0.25);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  .bible-verse {
+    font-size: 1.05rem;
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+
+  .bible-ref {
+    font-size: 0.9rem;
+    color: #e0e0e0;
+    margin-bottom: 18px;
+    font-weight: bold;
+  }
+
+  .bw-controls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .bw-btn {
+    background: rgba(200,200,200,0.18);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 8px 14px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: white;
+    transition: 0.25s ease;
+  }
+
+  .bw-btn:hover {
+    background: rgba(255,255,255,0.35);
+    transform: translateY(-2px);
+  }
+
+  .bw-btn:active {
+    transform: scale(0.95);
+  }
+
+  .bw-btn-primary {
+    background: rgba(255,255,255,0.35);
+  }
+
+  .bw-small {
+    font-size: .75rem;
+    color: #d0d0d0;
+    margin-top: 14px;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="page-header">Bible Verses</div>
+
+<div class="bible-widget-root">
+  <div class="bible-verse" id="bw-verse">Loading verse…</div>
+  <div class="bible-ref" id="bw-ref"></div>
+
+  <div class="bw-controls">
+    <button class="bw-btn" id="bw-prev">Prev</button>
+    <button class="bw-btn bw-btn-primary" id="bw-random">Random Verse</button>
+    <button class="bw-btn" id="bw-next">Next</button>
+  </div>
+
+  <div class="bw-small" id="bw-date"></div>
+</div>
+
+<script>
+(function(){
+  const verseEl = document.getElementById('bw-verse');
+  const refEl = document.getElementById('bw-ref');
+  const dateEl = document.getElementById('bw-date');
+  const prevBtn = document.getElementById('bw-prev');
+  const nextBtn = document.getElementById('bw-next');
+  const randBtn = document.getElementById('bw-random');
+
+  let verses = [];
+  let currentIndex = 0;
+
+  async function loadVerse() {
+    try {
+      let url = "https://labs.bible.org/api/?passage=random&type=json";
+      const res = await fetch(url);
+      const data = await res.json();
+      const v = data[0];
+      verses.push({text: v.text, ref: `${v.bookname} ${v.chapter}:${v.verse}`});
+      currentIndex = verses.length-1;
+      displayVerse();
+    } catch(e) {
+      verseEl.textContent = "Could not load verse.";
+      refEl.textContent = "";
+    }
+  }
+
+  function displayVerse(){
+    const v = verses[currentIndex];
+    verseEl.textContent = v.text;
+    refEl.textContent = v.ref;
+    dateEl.textContent = new Date().toLocaleDateString(undefined,{
+      weekday:"long",
+      month:"short",
+      day:"numeric"
+    });
+  }
+
+  prevBtn.onclick = () => { 
+    if(currentIndex>0){ 
+      currentIndex--; 
+      displayVerse(); 
+    } 
+  };
+
+  nextBtn.onclick = () => { 
+    if(currentIndex<verses.length-1){ 
+      currentIndex++; 
+      displayVerse(); 
+    } else { 
+      loadVerse(); 
+    }
+  };
+
+  randBtn.onclick = () => loadVerse();
+
+  loadVerse();
+})();
+</script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+.bnav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+display:flex;gap:16px;padding:8px 14px;
+background:rgba(18,18,18,.65);backdrop-filter:blur(10px);
+border-radius:16px;z-index:9999}
+.bnav a{color:#e6e6e6;font-size:16px;position:relative;transition:.2s}
+.bnav a:hover{color:#fff;transform:scale(1.2)}
+.bnav a::after{
+content:attr(data);
+position:absolute;bottom:140%;left:50%;
+transform:translateX(-50%);
+background:#111;color:#fff;
+padding:3px 6px;font-size:11px;
+border-radius:6px;opacity:0;
+white-space:nowrap;transition:.2s
+}
+.bnav a:hover::after{opacity:1}
+</style>
+<div class="bnav">
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/index.html" data="Home"><i class="fa-solid fa-house"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Games.html" data="Games"><i class="fa-solid fa-gamepad"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Movies.html" data="Movies"><i class="fa-solid fa-film"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Chat.html" data="Chat"><i class="fa-solid fa-message"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Links.html" data="Links"><i class="fa-solid fa-link"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Spotify.html" data="Music"><i class="fa-solid fa-music"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Tools.html" data="Tools"><i class="fa-solid fa-wrench"></i></a>
+</div>
+<script>
+trackVisit("bible-verses");
+</script>
+</body>
+</html>
