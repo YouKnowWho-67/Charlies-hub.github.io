@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  // Apply theme BEFORE page renders
+  (function() {
+    const theme = localStorage.getItem('siteTheme') || 'dark';
+    if (theme === 'light') document.documentElement.classList.add('theme-light');
+    if (theme === 'neon') document.documentElement.classList.add('theme-neon');
+    if (theme === 'spring') document.documentElement.classList.add('theme-spring');
+    if (theme === 'summer') document.documentElement.classList.add('theme-summer');
+    if (theme === 'autumn') document.documentElement.classList.add('theme-autumn');
+    if (theme === 'winter') document.documentElement.classList.add('theme-winter');
+  })();
+</script>
+<script src="../notification-helper.js"></script>
+<meta charset="UTF-8">
+<title>Snoopy’s Hub | Unit Converter</title>
+<style>
+* { box-sizing: border-box; font-family: Arial, sans-serif; }
+
+body {
+  margin:0;
+  min-height:100vh;
+  background:
+    linear-gradient(rgba(25,25,25,0.85), rgba(25,25,25,0.85)),
+    url("https://i.pinimg.com/originals/11/cf/ee/11cfeef9eaa56c71a6eeb9933f933492.gif")
+    center / cover fixed;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:white;
+}
+
+.glass {
+  width: 96%;
+  max-width: 1000px;
+  min-height: 600px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(16px);
+  border:1px solid rgba(255,255,255,0.25);
+  border-radius:22px;
+  padding:26px;
+  display:flex;
+  flex-direction:column;
+}
+
+.header { text-align:center; margin-bottom:18px; }
+.header h1 { margin:0; font-size:30px; }
+.header span { font-size:14px; color:#ccc; }
+
+.converter { display:flex; flex-direction:column; gap:18px; flex:1; justify-content:center; }
+
+label { font-size:16px; margin-bottom:6px; }
+select, input {
+  padding:12px;
+  border-radius:14px;
+  border:none;
+  outline:none;
+  font-size:16px;
+  width:100%;
+  max-width:400px;
+  background: rgba(0,0,0,0.4);
+  color:white;
+}
+
+.controls { display:flex; gap:14px; margin-top:16px; justify-content:center; }
+button {
+  flex:1;
+  padding:14px;
+  background: rgba(255,255,255,0.22);
+  border:1px solid rgba(255,255,255,0.35);
+  border-radius:16px;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+button:hover { background: rgba(255,255,255,0.38); }
+
+.result { text-align:center; font-size:20px; margin-top:20px; min-height:30px; }
+
+.footer { text-align:center; font-size:13px; color:#aaa; margin-top:10px; }
+</style>
+</head>
+
+<body>
+<div class="glass">
+  <div class="header">
+    <h1>Unit Converter</h1>
+    <span>Snoopy’s Hub Tools</span>
+  </div>
+
+  <div class="converter">
+    <div>
+      <label for="category">Category</label>
+      <select id="category" onchange="updateUnits()">
+        <option value="length">Length</option>
+        <option value="weight">Weight</option>
+        <option value="temperature">Temperature</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="fromUnit">From</label>
+      <select id="fromUnit"></select>
+    </div>
+
+    <div>
+      <label for="toUnit">To</label>
+      <select id="toUnit"></select>
+    </div>
+
+    <div>
+      <label for="value">Value</label>
+      <input id="value" type="number" placeholder="Enter value">
+    </div>
+
+    <div class="controls">
+      <button onclick="convert()">🔄 Convert</button>
+      <button onclick="clearFields()">🧹 Clear</button>
+    </div>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <div class="footer">© Snoopy’s Hub</div>
+</div>
+
+<script>
+const units = {
+  length: { meter:1, kilometer:1000, mile:1609.34, foot:0.3048, inch:0.0254 },
+  weight: { gram:1, kilogram:1000, pound:453.592, ounce:28.3495 },
+  temperature: { Celsius:'C', Fahrenheit:'F', Kelvin:'K' }
+};
+
+function updateUnits(){
+  const category = document.getElementById('category').value;
+  const fromUnit = document.getElementById('fromUnit');
+  const toUnit = document.getElementById('toUnit');
+  fromUnit.innerHTML=''; toUnit.innerHTML='';
+
+  if(category==='temperature'){
+    ['Celsius','Fahrenheit','Kelvin'].forEach(u=>{
+      fromUnit.innerHTML += `<option value="${u}">${u}</option>`;
+      toUnit.innerHTML += `<option value="${u}">${u}</option>`;
+    });
+  } else {
+    Object.keys(units[category]).forEach(u=>{
+      fromUnit.innerHTML += `<option value="${u}">${u}</option>`;
+      toUnit.innerHTML += `<option value="${u}">${u}</option>`;
+    });
+  }
+}
+
+function convert(){
+  const category = document.getElementById('category').value;
+  const from = document.getElementById('fromUnit').value;
+  const to = document.getElementById('toUnit').value;
+  let val = parseFloat(document.getElementById('value').value);
+  const resultEl = document.getElementById('result');
+
+  if(isNaN(val)) { resultEl.innerText="Enter a valid number"; return; }
+
+  if(category==='temperature'){
+    // Convert to Celsius first
+    if(from==='Fahrenheit') val = (val-32)*5/9;
+    if(from==='Kelvin') val = val-273.15;
+
+    // Convert to target
+    if(to==='Fahrenheit') val = val*9/5 +32;
+    if(to==='Kelvin') val = val+273.15;
+
+    resultEl.innerText = `${val.toFixed(2)} ${to}`;
+  } else {
+    const fromFactor = units[category][from];
+    const toFactor = units[category][to];
+    const res = val*fromFactor/toFactor;
+    resultEl.innerText = `${res.toFixed(4)} ${to}`;
+  }
+}
+
+function clearFields(){
+  document.getElementById('value').value='';
+  document.getElementById('result').innerText='';
+}
+
+window.onload = updateUnits;
+</script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+.bnav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+display:flex;gap:16px;padding:8px 14px;
+background:rgba(18,18,18,.65);backdrop-filter:blur(10px);
+border-radius:16px;z-index:9999}
+.bnav a{color:#e6e6e6;font-size:16px;position:relative;transition:.2s}
+.bnav a:hover{color:#fff;transform:scale(1.2)}
+.bnav a::after{
+content:attr(data);
+position:absolute;bottom:140%;left:50%;
+transform:translateX(-50%);
+background:#111;color:#fff;
+padding:3px 6px;font-size:11px;
+border-radius:6px;opacity:0;
+white-space:nowrap;transition:.2s
+}
+.bnav a:hover::after{opacity:1}
+</style>
+<div class="bnav">
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/index.html" data="Home"><i class="fa-solid fa-house"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Games.html" data="Games"><i class="fa-solid fa-gamepad"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Movies.html" data="Movies"><i class="fa-solid fa-film"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Chat.html" data="Chat"><i class="fa-solid fa-message"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Links.html" data="Links"><i class="fa-solid fa-link"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Spotify.html" data="Music"><i class="fa-solid fa-music"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Tools.html" data="Tools"><i class="fa-solid fa-wrench"></i></a>
+</div>
+<script>
+trackVisit("unit-converter");
+</script>
+</body>
+</html>
