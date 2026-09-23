@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  // Apply theme BEFORE page renders
+  (function() {
+    const theme = localStorage.getItem('siteTheme') || 'dark';
+    if (theme === 'light') document.documentElement.classList.add('theme-light');
+    if (theme === 'neon') document.documentElement.classList.add('theme-neon');
+    if (theme === 'spring') document.documentElement.classList.add('theme-spring');
+    if (theme === 'summer') document.documentElement.classList.add('theme-summer');
+    if (theme === 'autumn') document.documentElement.classList.add('theme-autumn');
+    if (theme === 'winter') document.documentElement.classList.add('theme-winter');
+  })();
+</script>
+<script src="../notification-helper.js"></script>
+<meta charset="UTF-8">
+<title>Snoopy’s Hub | HTML Viewer</title>
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    linear-gradient(rgba(25,25,25,0.85), rgba(25,25,25,0.85)),
+    url("https://i.pinimg.com/originals/11/cf/ee/11cfeef9eaa56c71a6eeb9933f933492.gif")
+    center / cover fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.glass {
+  width: 96%;
+  max-width: 1200px;
+  min-height: 640px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 22px;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 30px;
+}
+
+.header span {
+  font-size: 14px;
+  color: #ccc;
+}
+
+.editor {
+  display: flex;
+  gap: 18px;
+  flex: 1;
+}
+
+textarea {
+  width: 50%;
+  resize: none;
+  padding: 16px;
+  border-radius: 16px;
+  border: none;
+  outline: none;
+  background: rgba(0,0,0,0.4);
+  color: white;
+  font-size: 14px;
+}
+
+iframe {
+  width: 50%;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.3);
+  background: white;
+}
+
+.controls {
+  margin-top: 18px;
+  display: flex;
+  gap: 14px;
+}
+
+button {
+  flex: 1;
+  padding: 16px;
+  background: rgba(255,255,255,0.22);
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 16px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: rgba(255,255,255,0.38);
+}
+
+.footer {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 13px;
+  color: #aaa;
+}
+</style>
+</head>
+
+<body>
+
+<div class="glass">
+  <div class="header">
+    <h1>HTML Viewer</h1>
+    <span>Snoopy’s Hub Tools</span>
+  </div>
+
+  <div class="editor">
+    <textarea id="code" placeholder="Paste HTML code here..."></textarea>
+    <iframe id="preview"></iframe>
+  </div>
+
+  <div class="controls">
+    <button onclick="runHTML()">▶ Run HTML</button>
+    <button onclick="clearAll()">🧹 Clear</button>
+  </div>
+
+  <div class="footer">© Snoopy’s Hub</div>
+</div>
+
+<script>
+function runHTML() {
+  const html = document.getElementById("code").value;
+  const iframe = document.getElementById("preview");
+  iframe.srcdoc = html;
+}
+
+function clearAll() {
+  document.getElementById("code").value = "";
+  document.getElementById("preview").srcdoc = "";
+}
+</script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+.bnav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+display:flex;gap:16px;padding:8px 14px;
+background:rgba(18,18,18,.65);backdrop-filter:blur(10px);
+border-radius:16px;z-index:9999}
+.bnav a{color:#e6e6e6;font-size:16px;position:relative;transition:.2s}
+.bnav a:hover{color:#fff;transform:scale(1.2)}
+.bnav a::after{
+content:attr(data);
+position:absolute;bottom:140%;left:50%;
+transform:translateX(-50%);
+background:#111;color:#fff;
+padding:3px 6px;font-size:11px;
+border-radius:6px;opacity:0;
+white-space:nowrap;transition:.2s
+}
+.bnav a:hover::after{opacity:1}
+</style>
+<div class="bnav">
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/index.html" data="Home"><i class="fa-solid fa-house"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Games.html" data="Games"><i class="fa-solid fa-gamepad"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Movies.html" data="Movies"><i class="fa-solid fa-film"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Chat.html" data="Chat"><i class="fa-solid fa-message"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Links.html" data="Links"><i class="fa-solid fa-link"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Spotify.html" data="Music"><i class="fa-solid fa-music"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Tools.html" data="Tools"><i class="fa-solid fa-wrench"></i></a>
+</div>
+<script>
+trackVisit("html-viewer");
+</script>
+</body>
+</html>
