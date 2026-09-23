@@ -64,6 +64,12 @@
             </div>
 
             <div class="flex items-center space-x-3">
+                <!-- Home Button with hover text "Home" and opens link in same tab -->
+                <a href="https://s-wyattrosborne-bit.github.io/Snoopys-Hub-Remake--ByRobertReagan-/" target="_self" title="Home" class="group relative flex items-center p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <i class="fa-solid fa-house"></i>
+                    <span class="max-w-0 overflow-hidden whitespace-nowrap group-hover:max-w-xs group-hover:ml-2 text-sm font-medium transition-all duration-300 ease-in-out">Home</span>
+                </a>
+
                 <!-- Theme Toggle Button -->
                 <button id="themeToggle" class="p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <i id="themeIcon" class="fa-solid fa-moon"></i>
@@ -542,9 +548,9 @@
                                     Click Right Area
                                 </div>
                             </div>
-                            <button onclick="saveAndMinimize()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center space-x-2">
+                            <button onclick="saveAndMinimize()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-semibold shadow-lg shadow-emerald-500/20 transition-all flex items-center justify-center space-x-2">
                                 <i class="fa-solid fa-floppy-disk"></i>
-                                <span>Save Changes & Minimize Tab</span>
+                                <span>Save Changes & Complete</span>
                             </button>
                         </div>
                     `;
@@ -552,29 +558,33 @@
 
                 case 'finished':
                     container.innerHTML = `
-                        <div class="max-w-md mx-auto w-full text-center py-4 space-y-4">
-                            <div class="w-20 h-20 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto text-4xl shadow-lg shadow-emerald-500/10">
+                        <div class="max-w-md mx-auto w-full bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 text-center space-y-4">
+                            <div class="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto text-2xl">
                                 <i class="fa-solid fa-check"></i>
                             </div>
-                            <h3 class="text-2xl font-bold text-slate-900 dark:text-white">Setup Completed!</h3>
-                            <p class="text-sm text-slate-500 dark:text-slate-400">
-                                Your network is now connected to <strong>HCPC-auto</strong> with the custom DNS servers active.
+                            <h3 class="font-bold text-lg">Setup Complete!</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">
+                                Your network settings have been configured with custom DNS parameters for HCPC-auto.
                             </p>
-                            <div class="p-4 bg-slate-100 dark:bg-slate-800/60 rounded-xl text-left text-xs space-y-1 font-mono text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-                                <div>Primary DNS: 66.23.198.252</div>
-                                <div>Secondary DNS: 66.94.105.229</div>
-                                <div>Tertiary DNS: 167.86.91.171</div>
-                            </div>
                         </div>
                     `;
                     break;
             }
         }
 
-        // Helper Handlers for Step Actions
+        // Helper functions for interactive content steps
         function toggleStep1Wifi() {
             stepState.step1Connected = !stepState.step1Connected;
-            renderInteractiveContent('connect-wifi');
+            const status = document.getElementById('wifiStatus1');
+            if (status) {
+                if (stepState.step1Connected) {
+                    status.className = 'text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300';
+                    status.innerText = 'Connected ✓';
+                } else {
+                    status.className = 'text-xs px-2.5 py-1 rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300';
+                    status.innerText = 'Click to Connect';
+                }
+            }
         }
 
         function toggleStep5Custom() {
@@ -584,42 +594,36 @@
 
         function eraseStep6Boxes() {
             stepState.step6Erased = true;
-            renderInteractiveContent('erase-boxes');
+            document.getElementById('erase1').value = '';
+            document.getElementById('erase2').value = '';
+            document.getElementById('erase3').value = '';
         }
 
         function updateDNSInput(index, val) {
             stepState.step7Values[index] = val;
         }
 
-        function autoFillDNS(index, val) {
-            stepState.step7Values[index] = val;
+        function autoFillDNS(index, value) {
+            stepState.step7Values[index] = value;
             const input = document.getElementById(`dnsInput${index}`);
-            if (input) input.value = val;
+            if (input) input.value = value;
         }
 
         function copyToClipboard(text, index) {
-            // Fallback execCommand for iframe compatibility
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-
-            autoFillDNS(index, text);
-
+            navigator.clipboard.writeText(text);
             const toast = document.getElementById('copyToast');
             if (toast) {
                 toast.classList.remove('hidden');
                 setTimeout(() => toast.classList.add('hidden'), 2000);
             }
+            autoFillDNS(index, text);
         }
 
         function clickBoxRight() {
             const area = document.getElementById('clickRightArea');
             if (area) {
-                area.classList.add('bg-emerald-200', 'text-emerald-800');
-                area.innerText = "Confirmed ✓";
+                area.className = 'px-3 py-6 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-300 rounded text-xs font-bold flex items-center';
+                area.innerText = 'Committed ✓';
             }
         }
 
@@ -627,7 +631,6 @@
             stepState.step8Saved = true;
             changeStep(1);
         }
- 
-</script>
+    </script>
 </body>
 </html>
