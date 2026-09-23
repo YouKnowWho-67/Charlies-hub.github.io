@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>
+  // Apply theme BEFORE page renders
+  (function() {
+    const theme = localStorage.getItem('siteTheme') || 'dark';
+    if (theme === 'light') document.documentElement.classList.add('theme-light');
+    if (theme === 'neon') document.documentElement.classList.add('theme-neon');
+    if (theme === 'spring') document.documentElement.classList.add('theme-spring');
+    if (theme === 'summer') document.documentElement.classList.add('theme-summer');
+    if (theme === 'autumn') document.documentElement.classList.add('theme-autumn');
+    if (theme === 'winter') document.documentElement.classList.add('theme-winter');
+  })();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Update Log</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --accent: #9aa4b2;
+}
+
+/* Page base */
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background:
+    linear-gradient(rgba(50,50,50,0.8), rgba(50,50,50,0.8)),
+    url("https://i.pinimg.com/originals/11/cf/ee/11cfeef9eaa56c71a6eeb9933f933492.gif");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #e6e6e6;
+}
+
+/* Container */
+#updates {
+  max-width: 1000px;
+  margin: auto;
+  padding: 32px;
+}
+
+/* Title */
+.title {
+  text-align: center;
+  font-size: 42px;
+  letter-spacing: 4px;
+  margin-bottom: 8px;
+  color: #f0f0f0;
+  text-shadow: 0 0 16px rgba(255,255,255,0.12);
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 14px;
+  color: #a8a8a8;
+  margin-bottom: 32px;
+}
+
+/* Update card */
+.update {
+  background: rgba(18, 18, 18, 0.26);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 22px;
+  padding: 22px;
+  margin-bottom: 26px;
+
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.35),
+    inset 0 0 0 1px rgba(255,255,255,0.035);
+}
+
+/* Header row */
+.update-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.version {
+  font-size: 20px;
+  font-weight: 600;
+  color: #f2f2f2;
+}
+
+.date {
+  font-size: 13px;
+  color: #9a9a9a;
+}
+
+/* Update text */
+.update ul {
+  padding-left: 18px;
+  line-height: 1.6;
+}
+
+.update li {
+  color: #d6d6d6;
+  margin-bottom: 6px;
+}
+
+/* Divider glow (very subtle) */
+.update::after {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-top: 18px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255,255,255,0.08),
+    transparent
+  );
+}
+
+/* Theme Variants */
+.theme-light {
+  --accent: #007acc;
+}
+
+.theme-light body {
+  background: linear-gradient(rgba(240,240,240,0.9), rgba(240,240,240,0.9)),
+              url("https://i.pinimg.com/originals/11/cf/ee/11cfeef9eaa56c71a6eeb9933f933492.gif");
+  color: #333;
+}
+
+.theme-light .title {
+  color: #333;
+  text-shadow: none;
+}
+
+.theme-light .subtitle,
+.theme-light .date {
+  color: #666;
+}
+
+.theme-light .version {
+  color: #333;
+}
+
+.theme-light .update,
+.theme-light .update li {
+  background: rgba(255,255,255,0.9);
+  color: #333;
+}
+
+.theme-neon {
+  --accent: #ff00ff;
+}
+
+.theme-neon body {
+  background: linear-gradient(rgba(20,20,50,0.8), rgba(20,20,50,0.8)),
+              url("https://i.pinimg.com/originals/11/cf/ee/11cfeef9eaa56c71a6eeb9933f933492.gif");
+}
+
+.theme-neon .title {
+  text-shadow: 0 0 16px #ff00ff;
+}
+
+.theme-neon .update {
+  background: rgba(30,10,50,0.8);
+  border: 1px solid rgba(255,0,255,0.2);
+}
+
+.theme-neon .update::after {
+  background: linear-gradient(to right, transparent, rgba(255,0,255,0.2), transparent);
+}
+
+.theme-spring {
+  --accent: #f1af9b;
+}
+
+.theme-spring body {
+  background: linear-gradient(rgba(254, 196, 185, 0.288), rgba(254, 196, 185, 0.288)),
+              radial-gradient(circle at top left, rgba(124, 209, 133, 0.35), transparent 35%),
+              linear-gradient(180deg, #000000 0%, #000000 100%);
+  color: #1c1d1c;
+}
+
+.theme-spring .title,
+.theme-spring .version {
+  color: #000;
+}
+
+.theme-spring .subtitle,
+.theme-spring .date {
+  color: #333;
+}
+
+.theme-spring .update,
+.theme-spring .update li {
+  background: rgba(233, 180, 155, 0.7);
+  color: #000;
+}
+
+.theme-spring .update::after {
+  background: linear-gradient(to right, transparent, rgba(124, 209, 133, 0.3), transparent);
+}
+
+.theme-summer {
+  --accent: #f9a825;
+}
+
+.theme-summer body {
+  background: linear-gradient(rgba(255,246,220,0.88), rgba(255,246,220,0.88)),
+              radial-gradient(circle at top right, rgba(255,235,156,0.45), transparent 30%),
+              linear-gradient(180deg, #ffe6a8 0%, #f8f1d1 100%);
+  color: #3b2b0d;
+}
+
+.theme-summer .title,
+.theme-summer .version {
+  color: #5a3e1a;
+}
+
+.theme-summer .subtitle,
+.theme-summer .date {
+  color: #6b4e1a;
+}
+
+.theme-summer .update,
+.theme-summer .update li {
+  background: rgba(255, 238, 174, 0.8);
+  color: #3b2b0d;
+}
+
+.theme-summer .update::after {
+  background: linear-gradient(to right, transparent, rgba(249, 168, 37, 0.2), transparent);
+}
+
+.theme-autumn {
+  --accent: #ff8c00;
+}
+
+.theme-autumn body {
+  background: linear-gradient(rgba(139, 35, 0, 0.7), rgba(139, 35, 0, 0.7)),
+              linear-gradient(135deg, #cc5500 0%, #8b2300 100%);
+  color: #fff8f3;
+}
+
+.theme-autumn .title,
+.theme-autumn .version {
+  color: #ffe6cc;
+}
+
+.theme-autumn .subtitle,
+.theme-autumn .date {
+  color: #ffd9b3;
+}
+
+.theme-autumn .update,
+.theme-autumn .update li {
+  background: rgba(204, 85, 0, 0.7);
+  color: #fff8f3;
+}
+
+.theme-autumn .update::after {
+  background: linear-gradient(to right, transparent, rgba(255, 140, 0, 0.3), transparent);
+}
+
+.theme-winter {
+  --accent: #4da3ff;
+}
+
+.theme-winter body {
+  background: linear-gradient(rgba(50,50,50,0.8), rgba(50,50,50,0.8)),
+              url("https://i.pinimg.com/originals/11/cf/ee/11cfeef9eaa56c71a6eeb9933f933492.gif");
+  color: #e6e6e6;
+}
+
+.theme-winter .title,
+.theme-winter .version {
+  color: #f0f0f0;
+}
+
+.theme-winter .subtitle,
+.theme-winter .date {
+  color: #a8a8a8;
+}
+
+.theme-winter .update,
+.theme-winter .update li {
+  background: rgba(18, 18, 18, 0.26);
+  color: #d6d6d6;
+}
+
+.theme-winter .update::after {
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.08), transparent);
+}
+</style>
+</head>
+<body>
+<script>
+// Track badge with visit counter
+(function() {
+  const page = 'updates';
+  const visits = parseInt(localStorage.getItem('visit_' + page) || '0') + 1;
+  localStorage.setItem('visit_' + page, visits);
+  
+  const unlocked = JSON.parse(localStorage.getItem('unlockedBadges') || '[]');
+  const req = 3;
+  if (visits >= req && !unlocked.includes(page)) {
+    unlocked.push(page);
+    localStorage.setItem('unlockedBadges', JSON.stringify(unlocked));
+  }
+  localStorage.setItem('lastBadgeChecked', unlocked.length);
+})();
+</script>
+<div id="updates">
+
+  <h1 class="title">UPDATE LOG</h1>
+  <div class="subtitle">// The most recent changes to the site</div>
+
+  <!-- v1.1 -->
+  <div class="update">
+    <div class="update-header">
+      <div class="version">v1.1</div>
+      <div class="date">5-19-2026</div>
+    </div>
+    <ul>
+      <li>Might not fix it.</li>
+      <li>The games are broken 50/50 they they work.</li>
+      <li>Added picture backgrounds.</li>
+      <li>In the process of adding more movies.</li>
+      <li>Testing a new Proxy.</li>
+    </ul>
+  </div>
+  
+  <!-- v1.0 -->
+  <div class="update">
+    <div class="update-header">
+      <div class="version">v1.0</div>
+      <div class="date">5-3-2026</div>
+    </div>
+    <ul>
+      <li>Added themes for background.</li>
+      <li>Added notification system for site updates.</li>
+      <li>There are achievements to unlock.</li>
+      <li>New announcement system implemented.</li>
+      <li>Added a online status indicator.</li>
+      <li>In the process of adding more movies.</li>
+      <li>Testing a new Proxy.</li>
+      <li>Adding a AI assistant.</li>
+      <li>Added a quick bar for easy navigation.</li>
+    </ul>
+  </div>
+
+  <!-- v0.9 -->
+  <div class="update">
+    <div class="update-header">
+      <div class="version">v0.9</div>
+      <div class="date">4-28-2026</div>
+    </div>
+    <ul>
+      <li>Made a Poll.</li>
+      <li>Added a quick bar.</li>
+      <li>Fixed Games.</li>
+    </ul>
+  </div>
+  
+  <!-- v0.8 -->
+  <div class="update">
+    <div class="update-header">
+      <div class="version">v0.8</div>
+      <div class="date">4-1-2026</div>
+    </div>
+    <ul>
+      <li>Added Spotify.</li>
+      <li>Songs will be updated weekly.</li>
+      <li>Changed site link due to copyright issues.</li>
+    </ul>
+  </div>
+
+  <!-- v0.7 -->
+  <div class="update">
+    <div class="update-header">
+      <div class="version">v0.7</div>
+      <div class="date">2-26-2026</div>
+    </div>
+    <ul>
+      <li>Added Movies to the site.</li>
+      <li>Movies will updated every week.</li>
+    </ul>
+  </div>
+
+  <!-- v0.6 -->
+  <div class="update">
+    <div class="update-header">
+      <div class="version">v0.6</div>
+      <div class="date">2-23-2026</div>
+    </div>
+    <ul>
+      <li>The site got blocked, So I changed the link.</li>
+      <li>Next update will be Movies.</li>
+    </ul>
+  </div>
+
+  <!-- v0.5 -->
+  <div class="update">
+    <div class="update-header">
+      <div class="version">v0.5</div>
+      <div class="date">2-6-2026</div>
+    </div>
+    <ul>
+      <li>The site is back up.</li>
+      <li>Yea..</li>
+    </ul>
+  </div>
+
+
+<!-- v0.4 -->
+  <div class="update">
+    <div class="update-header">
+      <div class="version">v0.4</div>
+      <div class="date">1-22-2026</div>
+    </div>
+    <ul>
+      <li>The site was taken down for a few days for unknown reasons.</li>
+      <li>Yea</li>
+    </ul>
+  </div>
+
+<!-- v0.3 -->
+  <div class="update">
+    <div class="update-header">
+      <div class="version">v0.3</div>
+      <div class="date">1-20-2026</div>
+    </div>
+    <ul>
+      <li>Version 0.3 is now complete.</li>
+      <li>Fixed a few bugs.</li>
+      <li>The Site is now fully functional.</li>
+      <li>The RELEASE of the SITE</li>
+      <li>The site will be updated regularly.</li>
+    </ul>
+  </div>
+
+<!-- v0.2 -->
+  <div class="update">
+    <div class="update-header">
+      <div class="version">v0.2</div>
+      <div class="date">1-16-2026</div>
+    </div>
+    <ul>
+      <li>Version 0.2 is now complete.</li>
+      <li>Rearaged the site.</li>
+      <li>Fixed a few bugs.</li>
+      <li>Add all of the games.</li>
+      <li>Added a few more features.</li>
+      <li>Added a Chat feature.</li>
+    </ul>
+  </div>
+
+  <!-- Update -->
+  <div class="update">
+    <div class="update-header">
+      <div class="version">v0.1</div>
+      <div class="date">2025-11-12</div>
+    </div>
+    <ul>
+      <li>Version 0.1 is now complete.</li>
+      <li>Site has been created</li>
+      <li>Major UI changes to Homepage, Proxies, and Game Page.</li>
+      <li>Refreshed Proxies and Game Page with new links.</li>
+    </ul>
+  </div>
+
+</div>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+.bnav{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);
+display:flex;gap:16px;padding:8px 14px;
+background:rgba(18,18,18,.65);backdrop-filter:blur(10px);
+border-radius:16px;z-index:9999}
+.bnav a{color:#e6e6e6;font-size:16px;position:relative;transition:.2s}
+.bnav a:hover{color:#fff;transform:scale(1.2)}
+.bnav a::after{
+content:attr(data);
+position:absolute;bottom:140%;left:50%;
+transform:translateX(-50%);
+background:#111;color:#fff;
+padding:3px 6px;font-size:11px;
+border-radius:6px;opacity:0;
+white-space:nowrap;transition:.2s
+}
+.bnav a:hover::after{opacity:1}
+</style>
+<div class="bnav">
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/index.html" data="Home"><i class="fa-solid fa-house"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Games.html" data="Games"><i class="fa-solid fa-gamepad"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Movies.html" data="Movies"><i class="fa-solid fa-film"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Chat.html" data="Chat"><i class="fa-solid fa-message"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Links.html" data="Links"><i class="fa-solid fa-link"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Spotify.html" data="Music"><i class="fa-solid fa-music"></i></a>
+  <a href="https://thatoneguy-67.github.io/Snoopys-Hub/Pages/Tools.html" data="Tools"><i class="fa-solid fa-wrench"></i></a>
+</div>
+<script src="../notification-helper.js"></script>
+<script>
+trackVisit("updates");
+</script>
+</body>
+</html>
