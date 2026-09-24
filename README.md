@@ -1,17 +1,17 @@
 #  Snoopy's Hub
 
-A custom web dashboard built by **ThatOneGuy**.
+A custom web dashboard built by **Robert Reagan Basically it's all ThatOneGuy's but I added a twist and will be trying to add more**.
 Snoopy’s Hub is a clean, modern homepage that includes tools, games, and useful features in one place.
 
 ---
 
 ## 🌐 Live Site
 
-👉 https://thatoneguy-67.github.io/Snoopys-Hub/
+👉 
 
 ---
 
-## 📌 Features
+## 📌 [Features](https://youknowwholol.github.io/Charlies-hub-h0me/index.html)
 
 * 🕒 **Live Date & Time**
 * 🔋 **Battery Status** (if supported by browser)
@@ -22,6 +22,8 @@ Snoopy’s Hub is a clean, modern homepage that includes tools, games, and usefu
 * 💬 **Chat Page**
 * 💻 **OS-Style Layout Design**
 * 🎨 Glassmorphism UI with blur effects
+* 🌐 New proxy added
+
 
 ---
 
@@ -30,87 +32,3 @@ Snoopy’s Hub is a clean, modern homepage that includes tools, games, and usefu
 * HTML
 * CSS
 * JavaScript
-
----
-
-## 📂 Project Structure
-
-```
-Snoopys-Hub/
-│── index.html
-│── Pages/
-│   ├── games.html
-│   ├── tools.html
-│   ├── chat.html
-│   ├── os.html
-│   └── updates.html
-```
-
----
-
-## 🚀 Getting Started
-
-1. Clone the repo:
-
-```
-git clone https://github.com/ThatOneGuy-67/Snoopys-Hub.git
-```
-
-2. Open `index.html` in your browser
-
-OR
-
-Visit the live site above.
-
----
-
-## ⚙️ GitHub Pages Setup
-
-This site is hosted using **GitHub Pages**.
-
-To enable it:
-
-1. Go to **Settings**
-2. Click **Pages**
-3. Set source to:
-
-   * Branch: `main`
-   * Folder: `/ (root)`
-
----
-
-
-## ⚠️ Notes
-
-* Battery API may not work on all browsers
-* Some features are still in development
-* External links open in new tabs
-
----
-
-## 📌 To-Do
-
-* [ ] Add weather widget
-* [ ] Add music player
-* [ ] Improve mobile layout
-* [ ] Add user settings (theme toggle, name, etc.)
-* [ ] Create real visit counter
-
----
-
-## 📜 License
-
-This project is for educational and personal use.
-
----
-
-## 👤 Author
-
-**ThatOneGuy**
-GitHub: https://github.com/ThatOneGuy-67
-
----
-
-## ⭐ Support
-
-If you like this project, consider giving it a ⭐ on GitHub!
