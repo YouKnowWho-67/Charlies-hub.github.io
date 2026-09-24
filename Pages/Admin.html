@@ -225,12 +225,14 @@
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   // Only this email is allowed into the admin panel.
-  const ALLOWED_EMAIL = "s-wyattrosborne@halifax.k12.va.us";
-  const ALLOWED_EMAIL = "s-deandrewcwinstead@halifax.k12.va.us";
+  const ALLOWED_EMAILS = [
+  "s-wyattrosborne@halifax.k12.va.us",
+  "s-deandrewcwinstead@halifax.k12.va.us"
+];
 
 
   function isAllowedUser(user) {
-    return !!user && (user.email || "").toLowerCase() === ALLOWED_EMAIL.toLowerCase();
+    if (!ALLOWED_EMAILS.includes(user.email.toLowerCase())) {
   }
 
   async function showAdmin(user) {
