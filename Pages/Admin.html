@@ -23,7 +23,7 @@
       text-align: center;
         background:
             linear-gradient(rgba(50,50,50,0.8), rgba(50,50,50,0.8)),
-            url("https://www.image2url.com/r2/default/gifs/1790199985199-05aceb14-c271-47bc-bf0e-25e8d250f3ff.gif");
+            url("https://i.pinimg.com/originals/11/cf/ee/11cfeef9eaa56c71a6eeb9933f933492.gif");
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -219,20 +219,19 @@
   */
   import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-  const SUPABASE_URL = "https://kufyvokidjmutcgxpcyt.supabase.co/";
-  const SUPABASE_ANON_KEY = "sb_publishable_Rg69pqybAYlLYnd8pgT3dg_SFii537J";
+  const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
+  const SUPABASE_ANON_KEY = "YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY";
 
   const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   // Only this email is allowed into the admin panel.
   const ALLOWED_EMAILS = [
-  "s-wyattrosborne@halifax.k12.va.us",
-  "s-deandrewcwinstead@halifax.k12.va.us"
-];
-
+    "s-wyattrosborne@halifax.k12.va.us",
+    "s-deandrewcwinstead@halifax.k12.va.us"
+  ];
 
   function isAllowedUser(user) {
-    if (!ALLOWED_EMAILS.includes(user.email.toLowerCase())) {
+    return !!user && (user.email || "").toLowerCase() === ALLOWED_EMAIL.toLowerCase();
   }
 
   async function showAdmin(user) {
