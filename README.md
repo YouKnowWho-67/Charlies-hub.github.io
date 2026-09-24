@@ -7,11 +7,11 @@ Snoopy’s Hub is a clean, modern homepage that includes tools, games, and usefu
 
 ## 🌐 Live Site
 
-👉 
+👉 https://youknowwholol.github.io/Charlies-hub-h0me/index.html
 
 ---
 
-## 📌 [Features](https://youknowwholol.github.io/Charlies-hub-h0me/index.html)
+## 📌 [Features]
 
 * 🕒 **Live Date & Time**
 * 🔋 **Battery Status** (if supported by browser)
