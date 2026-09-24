@@ -78,11 +78,36 @@
                         .maybeSingle();
 
                     if (error) throw error;
-                    if (data && data.title && data.text && data.title.toString().trim() !== "" && data.text.toString().trim() !== "") {
+                    let announcementTitle = data?.title || "";
+                    let announcementText = data?.text || "";
+
+                    // New Supabase schema stores the announcement in site.announcement.
+                    if ((!announcementTitle || !announcementText) && data?.announcement) {
+                        try {
+                            const stored = typeof data.announcement === "string"
+                                ? JSON.parse(data.announcement)
+                                : data.announcement;
+
+                            if (stored && typeof stored === "object") {
+                                announcementTitle = stored.title || "";
+                                announcementText = stored.text || "";
+                            } else if (typeof data.announcement === "string") {
+                                announcementTitle = "Announcement";
+                                announcementText = data.announcement;
+                            }
+                        } catch {
+                            announcementTitle = "Announcement";
+                            announcementText = String(data.announcement);
+                        }
+                    }
+
+                    if (announcementTitle && announcementText &&
+                        announcementTitle.toString().trim() !== "" &&
+                        announcementText.toString().trim() !== "") {
                         const banner = document.getElementById("announcementBanner");
                         const text = document.getElementById("announcementText");
                         if (banner && text) {
-                            text.innerText = data.title + ": " + data.text;
+                            text.innerText = announcementTitle + ": " + announcementText;
                             banner.classList.remove("hidden");
                             banner.onclick = () => banner.classList.add("hidden");
                             const dash = document.getElementById("dashboard");
@@ -90,7 +115,7 @@
 
                             const settings = JSON.parse(localStorage.getItem("notifSettings") || "{}");
                             if (settings.announce) {
-                                showSiteNotification("📢 " + data.title, data.text);
+                                showSiteNotification("📢 " + announcementTitle, announcementText);
                             }
                         }
                     }
@@ -1183,7 +1208,7 @@
                 async function loadActivePoll() {
                     const { data, error } = await supabase
                         .from("site")
-                        .select("activePollId")
+                        .select("*")
                         .eq("id", "announcement")
                         .maybeSingle();
 
@@ -1191,7 +1216,7 @@
                         console.error("Active poll load error:", error);
                         activePollId = null;
                     } else {
-                        activePollId = data?.activePollId || null;
+                        activePollId = data?.activePollId ?? data?.active_poll_id ?? null;
                     }
                     renderPoll();
                 }
@@ -1825,7 +1850,7 @@
             { text: "unblock-all", link: "Pages/unblock-all.html" },
              { text: "proxy", link: "Pages/proxybase.html" },
             { text: "credits", link: "Pages/credits.html" },
-            { text: "Admin-Login", link: "Pages/Admin.html"}
+            { text: "Admin-Login", link: "Pages/Admin.html" }
         ];
 
            window.onload = () => {
