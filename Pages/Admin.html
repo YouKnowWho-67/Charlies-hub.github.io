@@ -1,0 +1,667 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Only</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Inter, Arial, sans-serif;
+            background:
+                radial-gradient(circle at 20% 20%, #1e293b 0%, transparent 35%),
+                radial-gradient(circle at 80% 80%, #111827 0%, transparent 35%),
+                #05070b;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .background {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .orb {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.15;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .orb.one {
+            background: #6366f1;
+            top: -100px;
+            left: -100px;
+        }
+
+        .orb.two {
+            background: #06b6d4;
+            bottom: -120px;
+            right: -80px;
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(40px, -30px);
+            }
+        }
+
+        /* Login */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+            transition: opacity .4s ease, transform .4s ease;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 430px;
+            padding: 40px;
+            background: rgba(15, 23, 42, 0.75);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 24px;
+            box-shadow:
+                0 25px 70px rgba(0,0,0,.45),
+                inset 0 1px rgba(255,255,255,.04);
+            backdrop-filter: blur(20px);
+            animation: cardIn .7s ease;
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: translateY(25px) scale(.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .logo {
+            width: 58px;
+            height: 58px;
+            border-radius: 17px;
+            display: grid;
+            place-items: center;
+            margin-bottom: 22px;
+            font-size: 25px;
+            background: linear-gradient(135deg, #6366f1, #06b6d4);
+            box-shadow: 0 10px 30px rgba(99,102,241,.25);
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #cbd5e1;
+            font-size: 13px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 15px;
+            border-radius: 12px;
+            border: 1px solid #263244;
+            background: rgba(2,6,23,.65);
+            color: white;
+            outline: none;
+            font-size: 14px;
+            transition: .25s ease;
+        }
+
+        input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99,102,241,.12);
+            transform: translateY(-1px);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 50px;
+        }
+
+        .show-password {
+            position: absolute;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .login-button {
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            margin-top: 8px;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .25s ease;
+            box-shadow: 0 10px 25px rgba(79,70,229,.25);
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(79,70,229,.35);
+        }
+
+        .login-button:active {
+            transform: scale(.98);
+        }
+
+        .error {
+            color: #fb7185;
+            font-size: 13px;
+            margin-top: 15px;
+            text-align: center;
+            min-height: 18px;
+        }
+
+        /* Main application */
+        .app {
+            display: none;
+            min-height: 100vh;
+            padding: 35px;
+            animation: appIn .6s ease;
+        }
+
+        @keyframes appIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .topbar {
+            max-width: 1100px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .title h2 {
+            font-size: 27px;
+            margin-bottom: 5px;
+        }
+
+        .title p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .logout {
+            border: 1px solid #263244;
+            background: rgba(15,23,42,.7);
+            color: #cbd5e1;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .logout:hover {
+            border-color: #475569;
+            background: #111827;
+        }
+
+        .form-grid {
+            max-width: 1100px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .field {
+            background: rgba(15,23,42,.65);
+            border: 1px solid rgba(255,255,255,.06);
+            padding: 20px;
+            border-radius: 16px;
+            backdrop-filter: blur(12px);
+            transition: .25s ease;
+            animation: fieldIn .5s ease both;
+        }
+
+        .field:hover {
+            transform: translateY(-3px);
+            border-color: rgba(99,102,241,.35);
+            box-shadow: 0 12px 35px rgba(0,0,0,.2);
+        }
+
+        @keyframes fieldIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .field:nth-child(1) { animation-delay: .03s; }
+        .field:nth-child(2) { animation-delay: .06s; }
+        .field:nth-child(3) { animation-delay: .09s; }
+        .field:nth-child(4) { animation-delay: .12s; }
+        .field:nth-child(5) { animation-delay: .15s; }
+        .field:nth-child(6) { animation-delay: .18s; }
+        .field:nth-child(7) { animation-delay: .21s; }
+        .field:nth-child(8) { animation-delay: .24s; }
+        .field:nth-child(9) { animation-delay: .27s; }
+        .field:nth-child(10) { animation-delay: .30s; }
+
+        .field input {
+            background: rgba(2,6,23,.55);
+        }
+
+        .save-button {
+            grid-column: 1 / -1;
+            padding: 15px;
+            border: none;
+            border-radius: 13px;
+            background: linear-gradient(135deg, #6366f1, #06b6d4);
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: .25s ease;
+        }
+
+        .save-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(6,182,212,.18);
+        }
+
+        @media (max-width: 700px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .app {
+                padding: 20px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .login-card {
+                padding: 30px 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="background">
+    <div class="orb one"></div>
+    <div class="orb two"></div>
+</div>
+
+<!-- LOGIN -->
+<div class="login-container" id="loginScreen">
+    <div class="login-card">
+
+        <div class="logo">✦</div>
+
+        <h1>Welcome</h1>
+        <p class="subtitle">
+            Sign in to access admin link.
+        </p>
+
+        <form id="loginForm">
+
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    autocomplete="username"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label for="password">Password</label>
+
+                <div class="password-wrapper">
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="show-password"
+                        onclick="togglePassword()"
+                    >
+                        Show
+                    </button>
+                </div>
+            </div>
+
+            <button class="login-button" type="submit">
+                Sign In
+            </button>
+
+            <div class="error" id="error"></div>
+
+        </form>
+    </div>
+</div>
+
+
+<!-- MAIN APP -->
+<div class="app" id="app">
+
+    <div class="topbar">
+
+        <div class="title">
+            <h2>Admin</h2>
+            <p>Enter information into the fields below.</p>
+        </div>
+
+        <button class="logout" onclick="logout()">
+            Log out
+        </button>
+
+    </div>
+
+    <div class="form-grid">
+
+        <div class="field">
+            <label>Snoopys hub chat admin accounts 👑ThatOneGuy👑-password-th@t</label>
+          
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Snoopy's Hub creators outlook acc info- carsonldavis11@outlook.com-Password-Carson11$-School info-Lunch number 1700300041</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>admin link info email-carsondavis11@outlook.com-passwrd-67676767</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>MORE INFO SOON ON HIS SITE AND HOW TO HAACKK SHI</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Field 05</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Field 06</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Field 07</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Field 08</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Field 09</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Field 10</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Field 11</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Field 12</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Field 13</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Field 14</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Field 15</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Field 16</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Field 17</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Field 18</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Field 19</label>
+            <input type="text">
+        </div>
+
+        <div class="field">
+            <label>Field 20</label>
+            <input type="text">
+        </div>
+
+        <button class="save-button" onclick="saveFields()">
+            Save Information
+        </button>
+
+    </div>
+</div>
+
+
+<script>
+    /*
+        Login combinations from the previous version.
+        Exact email/password matching is used.
+    */
+
+    const accounts = [
+        {
+            email: "s-deandrewcwinstead@halifax.k12.va.us",
+            password: "Babyru78"
+        },
+        {
+            email: "s-wyattrosborne@halifax.k12.va.us",
+            password: "Robert2012!@?"
+        }
+    ];
+
+    const loginForm = document.getElementById("loginForm");
+    const loginScreen = document.getElementById("loginScreen");
+    const app = document.getElementById("app");
+    const error = document.getElementById("error");
+
+    loginForm.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        const valid = accounts.some(account =>
+            account.email === email &&
+            account.password === password
+        );
+
+        if (valid) {
+            error.textContent = "";
+
+            loginScreen.style.opacity = "0";
+            loginScreen.style.transform = "scale(.97)";
+
+            setTimeout(() => {
+                loginScreen.style.display = "none";
+                app.style.display = "block";
+            }, 400);
+
+        } else {
+            error.textContent = "Incorrect email or password.";
+
+            const card = document.querySelector(".login-card");
+
+            card.animate(
+                [
+                    { transform: "translateX(0)" },
+                    { transform: "translateX(-8px)" },
+                    { transform: "translateX(8px)" },
+                    { transform: "translateX(-5px)" },
+                    { transform: "translateX(0)" }
+                ],
+                {
+                    duration: 350
+                }
+            );
+        }
+    });
+
+    function togglePassword() {
+        const password = document.getElementById("password");
+        const button = document.querySelector(".show-password");
+
+        if (password.type === "password") {
+            password.type = "text";
+            button.textContent = "Hide";
+        } else {
+            password.type = "password";
+            button.textContent = "Show";
+        }
+    }
+
+    function logout() {
+        app.style.display = "none";
+        loginScreen.style.display = "flex";
+
+        setTimeout(() => {
+            loginScreen.style.opacity = "1";
+            loginScreen.style.transform = "scale(1)";
+        }, 20);
+
+        document.getElementById("password").value = "";
+    }
+
+    function saveFields() {
+        const fields = document.querySelectorAll(".field input");
+
+        fields.forEach((field, index) => {
+            localStorage.setItem(
+                "workspace_field_" + (index + 1),
+                field.value
+            );
+        });
+
+        const button = document.querySelector(".save-button");
+        const original = button.textContent;
+
+        button.textContent = "✓ Saved";
+
+        setTimeout(() => {
+            button.textContent = original;
+        }, 1500);
+    }
+
+    // Restore previously saved fields
+    window.addEventListener("DOMContentLoaded", () => {
+        const fields = document.querySelectorAll(".field input");
+
+        fields.forEach((field, index) => {
+            const saved = localStorage.getItem(
+                "workspace_field_" + (index + 1)
+            );
+
+            if (saved !== null) {
+                field.value = saved;
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
+```
