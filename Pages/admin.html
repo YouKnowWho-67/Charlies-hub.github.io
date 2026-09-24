@@ -265,7 +265,8 @@ onAuthStateChanged(auth, user => {
     // 🔒 ONLY ALLOW THESE ADMINS
     if (
       user.email !== "carsonldavis11@outlook.com" &&
-      user.email !== "carsonldavis@halifax.k12.va.us"
+      user.email !== "carsonldavis@halifax.k12.va.us" &&
+      user.email !== "s-wyattrosborne@halifax.k12.va.us"
     ) {
       alert("Not authorized");
       signOut(auth);
