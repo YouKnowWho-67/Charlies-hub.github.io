@@ -1,8 +1,10 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Verification</title>
 
     <style>
@@ -14,71 +16,280 @@
 
         body {
             min-height: 100vh;
-            background: #080808;
-            color: white;
-            font-family: Arial, sans-serif;
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            color: #ffffff;
+
+            background:
+                radial-gradient(
+                    circle at 20% 20%,
+                    rgba(99, 102, 241, 0.18),
+                    transparent 35%
+                ),
+                radial-gradient(
+                    circle at 80% 80%,
+                    rgba(6, 182, 212, 0.12),
+                    transparent 35%
+                ),
+                #05070b;
+
+            overflow: hidden;
+        }
+
+        .screen {
+            min-height: 100vh;
+
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: center;
+
+            padding: 20px;
         }
 
         .box {
-            width: 90%;
-            max-width: 420px;
-            background: #111;
-            border: 1px solid #292929;
-            border-radius: 18px;
-            padding: 35px;
+            width: min(430px, 100%);
+
+            padding: 40px;
+
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,.5);
-            animation: fadeIn .5s ease;
+
+            background: rgba(15, 23, 42, 0.82);
+
+            border: 1px solid rgba(255, 255, 255, 0.08);
+
+            border-radius: 24px;
+
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.5),
+                inset 0 1px rgba(255, 255, 255, 0.04);
+
+            backdrop-filter: blur(20px);
+
+            animation: cardIn 0.65s ease;
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform:
+                    translateY(25px)
+                    scale(0.96);
+            }
+
+            to {
+                opacity: 1;
+                transform:
+                    translateY(0)
+                    scale(1);
+            }
+        }
+
+        .icon {
+            width: 70px;
+            height: 70px;
+
+            margin: 0 auto 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 20px;
+
+            font-size: 31px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #06b6d4
+                );
+
+            box-shadow:
+                0 12px 35px
+                rgba(99, 102, 241, 0.25);
+        }
+
+        .success-icon {
+            width: 76px;
+            height: 76px;
+
+            margin: 0 auto 22px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            font-size: 34px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #10b981,
+                    #06b6d4
+                );
+
+            box-shadow:
+                0 12px 35px
+                rgba(16, 185, 129, 0.22);
+
+            animation: successPop 0.55s ease;
+        }
+
+        @keyframes successPop {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+
+            70% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         h1 {
-            margin-bottom: 12px;
+            font-size: 27px;
+            margin-bottom: 10px;
         }
 
         p {
-            color: #aaa;
-            margin-bottom: 25px;
+            color: #94a3b8;
+
+            font-size: 14px;
+
+            line-height: 1.65;
+
+            margin-bottom: 27px;
         }
 
         button {
             width: 100%;
-            padding: 14px;
+
+            padding: 15px;
+
             border: none;
-            border-radius: 10px;
-            background: white;
-            color: black;
-            font-size: 16px;
-            font-weight: bold;
+
+            border-radius: 13px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #4f46e5
+                );
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
             cursor: pointer;
-            transition: .2s;
+
+            transition:
+                transform 0.2s ease,
+                box-shadow 0.2s ease,
+                opacity 0.2s ease;
         }
 
         button:hover {
             transform: translateY(-2px);
-            opacity: .9;
+
+            box-shadow:
+                0 12px 30px
+                rgba(99, 102, 241, 0.3);
         }
 
-        .logs {
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+            transform: none;
+        }
+
+        .logs-button {
             margin-top: 12px;
-            background: #1c1c1c;
-            color: white;
+
+            background:
+                rgba(255, 255, 255, 0.07);
+
+            border: 1px solid
+                rgba(255, 255, 255, 0.1);
+        }
+
+        .logs-button:hover {
+            background:
+                rgba(255, 255, 255, 0.11);
+        }
+
+        #status {
+            min-height: 20px;
+
+            margin-top: 16px;
+
+            color: #94a3b8;
+
+            font-size: 13px;
         }
 
         .hidden {
             display: none;
         }
 
+        .fade-out {
+            animation:
+                fadeOut 0.4s ease
+                forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: scale(0.97);
+            }
+        }
+
+        .fade-in {
+            animation:
+                fadeIn 0.5s ease
+                forwards;
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(15px);
+                transform: scale(0.97);
             }
+
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .box {
+                padding: 30px 24px;
+            }
+
+            h1 {
+                font-size: 24px;
             }
         }
     </style>
@@ -86,103 +297,267 @@
 
 <body>
 
-<div class="box" id="verifyBox">
+    <!-- =========================
+         VERIFICATION SCREEN
+    ========================== -->
 
-    <h1>Verification</h1>
+    <div
+        class="screen"
+        id="verifyScreen"
+    >
 
-    <p>
-        Press the button below to verify.
-    </p>
+        <div class="box">
 
-    <button onclick="verify()">
-        OK — Verify
-    </button>
+            <div class="icon">
+                ✓
+            </div>
 
-</div>
+            <h1>
+                Verification Required
+            </h1>
+
+            <p>
+                Press OK to verify that you
+                are accessing this website.
+            </p>
+
+            <button
+                id="verifyButton"
+                onclick="verify()"
+            >
+                OK — Verify
+            </button>
+
+            <div id="status"></div>
+
+        </div>
+
+    </div>
 
 
-<div class="box hidden" id="verifiedBox">
+    <!-- =========================
+         VERIFIED SCREEN
+    ========================== -->
 
-    <h1>✓ Verified</h1>
+    <div
+        class="screen hidden"
+        id="verifiedScreen"
+    >
 
-    <p id="ipText">
-        Verification successful.
-    </p>
+        <div class="box">
 
-    <button class="logs" onclick="location.href='logs.html'">
-        View Logs
-    </button>
+            <div class="success-icon">
+                ✓
+            </div>
 
-</div>
+            <h1>
+                Verified
+            </h1>
+
+            <p id="ipText">
+                Verification successful.
+            </p>
+
+            <!-- LOGS BUTTON -->
+
+            <button
+                class="logs-button"
+                onclick="openLogs()"
+            >
+                View Logs
+            </button>
+
+        </div>
+
+    </div>
 
 
-<script>
+    <script>
 
-async function verify() {
+        async function verify() {
 
-    const button = document.querySelector("#verifyBox button");
+            const button =
+                document.getElementById(
+                    "verifyButton"
+                );
 
-    button.disabled = true;
-    button.textContent = "Verifying...";
+            const status =
+                document.getElementById(
+                    "status"
+                );
 
-    try {
 
-        // Get public IP
-        const response = await fetch("https://api.ipify.org?format=json");
+            button.disabled = true;
 
-        if (!response.ok) {
-            throw new Error("Could not get IP");
+            button.textContent =
+                "Verifying...";
+
+            status.textContent = "";
+
+
+            try {
+
+                /*
+                 * Get the visitor's public IP.
+                 *
+                 * This uses ipify because GitHub Pages
+                 * cannot directly determine the visitor's
+                 * public IP from browser JavaScript.
+                 */
+
+                const response =
+                    await fetch(
+                        "https://api.ipify.org?format=json"
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Unable to get IP"
+                    );
+
+                }
+
+
+                const data =
+                    await response.json();
+
+                const ip =
+                    data.ip;
+
+
+                /*
+                 * Create the verification log.
+                 */
+
+                const log = {
+
+                    ip: ip,
+
+                    time:
+                        new Date()
+                        .toLocaleString()
+
+                };
+
+
+                /*
+                 * Get existing logs.
+                 */
+
+                let logs =
+                    JSON.parse(
+                        localStorage.getItem(
+                            "verificationLogs"
+                        ) || "[]"
+                    );
+
+
+                /*
+                 * Add new log.
+                 */
+
+                logs.push(log);
+
+
+                /*
+                 * Save logs.
+                 */
+
+                localStorage.setItem(
+                    "verificationLogs",
+                    JSON.stringify(logs)
+                );
+
+
+                /*
+                 * Display IP.
+                 */
+
+                document.getElementById(
+                    "ipText"
+                ).textContent =
+                    "Verified successfully. IP: " +
+                    ip;
+
+
+                /*
+                 * Animate verification screen.
+                 */
+
+                const verifyScreen =
+                    document.getElementById(
+                        "verifyScreen"
+                    );
+
+                const verifiedScreen =
+                    document.getElementById(
+                        "verifiedScreen"
+                    );
+
+
+                verifyScreen.classList.add(
+                    "fade-out"
+                );
+
+
+                setTimeout(() => {
+
+                    verifyScreen.classList.add(
+                        "hidden"
+                    );
+
+                    verifyScreen.classList.remove(
+                        "fade-out"
+                    );
+
+                    verifiedScreen.classList.remove(
+                        "hidden"
+                    );
+
+                    verifiedScreen.classList.add(
+                        "fade-in"
+                    );
+
+                }, 400);
+
+
+            } catch (error) {
+
+                console.error(
+                    "Verification error:",
+                    error
+                );
+
+
+                status.textContent =
+                    "Verification failed. Please try again.";
+
+
+                button.disabled = false;
+
+                button.textContent =
+                    "OK — Verify";
+
+            }
+
         }
 
-        const data = await response.json();
 
-        const ip = data.ip;
+        /*
+         * Open the logs page.
+         */
 
-        // Create log
-        const log = {
-            ip: ip,
-            time: new Date().toLocaleString()
-        };
+        function openLogs() {
 
-        // Get existing logs
-        let logs = JSON.parse(
-            localStorage.getItem("verificationLogs") || "[]"
-        );
+            window.location.href =
+                "logs.html";
 
-        // Add newest log
-        logs.push(log);
+        }
 
-        // Save logs
-        localStorage.setItem(
-            "verificationLogs",
-            JSON.stringify(logs)
-        );
-
-        // Show IP
-        document.getElementById("ipText").textContent =
-            "Verified successfully. IP: " + ip;
-
-        // Switch screens
-        document.getElementById("verifyBox")
-            .classList.add("hidden");
-
-        document.getElementById("verifiedBox")
-            .classList.remove("hidden");
-
-    } catch (error) {
-
-        console.error(error);
-
-        button.disabled = false;
-        button.textContent = "OK — Verify";
-
-        alert("Verification failed. Please try again.");
-
-    }
-
-}
-
-</script>
+    </script>
 
 </body>
 </html>
+```
