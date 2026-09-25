@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,364 +9,153 @@
     <style>
         * {
             box-sizing: border-box;
-            margin: 0;
-            padding: 0;
         }
 
         body {
-            min-height: 100vh;
-            font-family:
-                Inter,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                Arial,
-                sans-serif;
-
-            color: #ffffff;
-
-            background:
-                radial-gradient(
-                    circle at 20% 20%,
-                    rgba(99, 102, 241, 0.18),
-                    transparent 35%
-                ),
-                radial-gradient(
-                    circle at 80% 80%,
-                    rgba(6, 182, 212, 0.12),
-                    transparent 35%
-                ),
-                #05070b;
-
-            overflow: hidden;
-        }
-
-        .screen {
+            margin: 0;
             min-height: 100vh;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            padding: 20px;
+            background: #050505;
+            color: white;
+
+            font-family: Arial, sans-serif;
         }
 
-        .box {
-            width: min(430px, 100%);
+        .card {
+            width: 90%;
+            max-width: 430px;
 
-            padding: 40px;
+            padding: 35px;
 
             text-align: center;
 
-            background: rgba(15, 23, 42, 0.82);
+            background: #111;
 
-            border: 1px solid rgba(255, 255, 255, 0.08);
-
-            border-radius: 24px;
-
-            box-shadow:
-                0 25px 80px rgba(0, 0, 0, 0.5),
-                inset 0 1px rgba(255, 255, 255, 0.04);
-
-            backdrop-filter: blur(20px);
-
-            animation: cardIn 0.65s ease;
-        }
-
-        @keyframes cardIn {
-            from {
-                opacity: 0;
-                transform:
-                    translateY(25px)
-                    scale(0.96);
-            }
-
-            to {
-                opacity: 1;
-                transform:
-                    translateY(0)
-                    scale(1);
-            }
-        }
-
-        .icon {
-            width: 70px;
-            height: 70px;
-
-            margin: 0 auto 22px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
+            border: 1px solid #292929;
             border-radius: 20px;
 
-            font-size: 31px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #6366f1,
-                    #06b6d4
-                );
-
             box-shadow:
-                0 12px 35px
-                rgba(99, 102, 241, 0.25);
-        }
-
-        .success-icon {
-            width: 76px;
-            height: 76px;
-
-            margin: 0 auto 22px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 50%;
-
-            font-size: 34px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #10b981,
-                    #06b6d4
-                );
-
-            box-shadow:
-                0 12px 35px
-                rgba(16, 185, 129, 0.22);
-
-            animation: successPop 0.55s ease;
-        }
-
-        @keyframes successPop {
-            0% {
-                opacity: 0;
-                transform: scale(0.5);
-            }
-
-            70% {
-                transform: scale(1.1);
-            }
-
-            100% {
-                opacity: 1;
-                transform: scale(1);
-            }
+                0 20px 60px rgba(0,0,0,.5);
         }
 
         h1 {
-            font-size: 27px;
+            margin-top: 0;
             margin-bottom: 10px;
         }
 
         p {
-            color: #94a3b8;
-
-            font-size: 14px;
-
-            line-height: 1.65;
-
-            margin-bottom: 27px;
+            color: #999;
+            line-height: 1.5;
         }
 
         button {
             width: 100%;
 
+            margin-top: 20px;
+
             padding: 15px;
 
             border: none;
+            border-radius: 10px;
 
-            border-radius: 13px;
+            background: #ffffff;
+            color: #000000;
 
-            background:
-                linear-gradient(
-                    135deg,
-                    #6366f1,
-                    #4f46e5
-                );
-
-            color: white;
-
-            font-size: 15px;
-
-            font-weight: 600;
+            font-size: 16px;
+            font-weight: bold;
 
             cursor: pointer;
-
-            transition:
-                transform 0.2s ease,
-                box-shadow 0.2s ease,
-                opacity 0.2s ease;
         }
 
         button:hover {
-            transform: translateY(-2px);
-
-            box-shadow:
-                0 12px 30px
-                rgba(99, 102, 241, 0.3);
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        button:disabled {
-            opacity: 0.6;
-            cursor: wait;
-            transform: none;
+            opacity: .85;
         }
 
         .logs-button {
-            margin-top: 12px;
+            background: #222;
+            color: white;
 
-            background:
-                rgba(255, 255, 255, 0.07);
-
-            border: 1px solid
-                rgba(255, 255, 255, 0.1);
-        }
-
-        .logs-button:hover {
-            background:
-                rgba(255, 255, 255, 0.11);
-        }
-
-        #status {
-            min-height: 20px;
-
-            margin-top: 16px;
-
-            color: #94a3b8;
-
-            font-size: 13px;
+            border: 1px solid #444;
         }
 
         .hidden {
-            display: none;
+            display: none !important;
         }
 
-        .fade-out {
-            animation:
-                fadeOut 0.4s ease
-                forwards;
+        #status {
+            margin-top: 15px;
+            color: #888;
+            font-size: 13px;
         }
 
-        @keyframes fadeOut {
-            to {
-                opacity: 0;
-                transform: scale(0.97);
-            }
-        }
-
-        .fade-in {
-            animation:
-                fadeIn 0.5s ease
-                forwards;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.97);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        @media (max-width: 500px) {
-            .box {
-                padding: 30px 24px;
-            }
-
-            h1 {
-                font-size: 24px;
-            }
+        .check {
+            font-size: 55px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 
 <body>
 
-    <!-- =========================
-         VERIFICATION SCREEN
-    ========================== -->
+    <!-- VERIFICATION -->
 
-    <div
-        class="screen"
-        id="verifyScreen"
-    >
+    <div class="card" id="verification">
 
-        <div class="box">
-
-            <div class="icon">
-                ✓
-            </div>
-
-            <h1>
-                Verification Required
-            </h1>
-
-            <p>
-                Press OK to verify that you
-                are accessing this website.
-            </p>
-
-            <button
-                id="verifyButton"
-                onclick="verify()"
-            >
-                OK — Verify
-            </button>
-
-            <div id="status"></div>
-
+        <div class="check">
+            ✓
         </div>
+
+        <h1>
+            Verification Required
+        </h1>
+
+        <p>
+            Press the button below to verify.
+        </p>
+
+        <button
+            id="verifyButton"
+            onclick="verify()"
+        >
+            OK — Verify
+        </button>
+
+        <div id="status"></div>
 
     </div>
 
 
-    <!-- =========================
-         VERIFIED SCREEN
-    ========================== -->
+    <!-- VERIFIED -->
 
     <div
-        class="screen hidden"
-        id="verifiedScreen"
+        class="card hidden"
+        id="verified"
     >
 
-        <div class="box">
-
-            <div class="success-icon">
-                ✓
-            </div>
-
-            <h1>
-                Verified
-            </h1>
-
-            <p id="ipText">
-                Verification successful.
-            </p>
-
-            <!-- LOGS BUTTON -->
-
-            <button
-                class="logs-button"
-                onclick="openLogs()"
-            >
-                View Logs
-            </button>
-
+        <div class="check">
+            ✓
         </div>
+
+        <h1>
+            Verified
+        </h1>
+
+        <p id="ipText">
+            Verification successful.
+        </p>
+
+        <!-- THIS IS THE LOGS BUTTON -->
+
+        <button
+            class="logs-button"
+            onclick="window.location.href='logs.html'"
+        >
+            LOGS
+        </button>
 
     </div>
 
@@ -386,23 +174,15 @@
                     "status"
                 );
 
-
             button.disabled = true;
 
             button.textContent =
                 "Verifying...";
 
-            status.textContent = "";
-
-
             try {
 
                 /*
-                 * Get the visitor's public IP.
-                 *
-                 * This uses ipify because GitHub Pages
-                 * cannot directly determine the visitor's
-                 * public IP from browser JavaScript.
+                 * Get public IP
                  */
 
                 const response =
@@ -410,15 +190,11 @@
                         "https://api.ipify.org?format=json"
                     );
 
-
                 if (!response.ok) {
-
                     throw new Error(
-                        "Unable to get IP"
+                        "IP request failed"
                     );
-
                 }
-
 
                 const data =
                     await response.json();
@@ -428,22 +204,17 @@
 
 
                 /*
-                 * Create the verification log.
+                 * Create log
                  */
 
                 const log = {
-
                     ip: ip,
-
-                    time:
-                        new Date()
-                        .toLocaleString()
-
+                    time: new Date().toLocaleString()
                 };
 
 
                 /*
-                 * Get existing logs.
+                 * Get old logs
                  */
 
                 let logs =
@@ -455,14 +226,14 @@
 
 
                 /*
-                 * Add new log.
+                 * Add new log
                  */
 
                 logs.push(log);
 
 
                 /*
-                 * Save logs.
+                 * Save logs
                  */
 
                 localStorage.setItem(
@@ -472,7 +243,7 @@
 
 
                 /*
-                 * Display IP.
+                 * Show IP
                  */
 
                 document.getElementById(
@@ -483,57 +254,33 @@
 
 
                 /*
-                 * Animate verification screen.
+                 * Hide verification card
                  */
 
-                const verifyScreen =
-                    document.getElementById(
-                        "verifyScreen"
-                    );
-
-                const verifiedScreen =
-                    document.getElementById(
-                        "verifiedScreen"
-                    );
-
-
-                verifyScreen.classList.add(
-                    "fade-out"
+                document.getElementById(
+                    "verification"
+                ).classList.add(
+                    "hidden"
                 );
 
 
-                setTimeout(() => {
+                /*
+                 * SHOW VERIFIED CARD
+                 */
 
-                    verifyScreen.classList.add(
-                        "hidden"
-                    );
-
-                    verifyScreen.classList.remove(
-                        "fade-out"
-                    );
-
-                    verifiedScreen.classList.remove(
-                        "hidden"
-                    );
-
-                    verifiedScreen.classList.add(
-                        "fade-in"
-                    );
-
-                }, 400);
+                document.getElementById(
+                    "verified"
+                ).classList.remove(
+                    "hidden"
+                );
 
 
             } catch (error) {
 
-                console.error(
-                    "Verification error:",
-                    error
-                );
-
+                console.error(error);
 
                 status.textContent =
-                    "Verification failed. Please try again.";
-
+                    "Could not verify. Try again.";
 
                 button.disabled = false;
 
@@ -544,20 +291,7 @@
 
         }
 
-
-        /*
-         * Open the logs page.
-         */
-
-        function openLogs() {
-
-            window.location.href =
-                "logs.html";
-
-        }
-
     </script>
 
 </body>
 </html>
-```
