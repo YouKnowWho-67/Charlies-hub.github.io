@@ -1,7 +1,7 @@
 #  Charlie's Hub
 
 A custom web dashboard built by **Robert Reagan Basically it's all ThatOneGuy's but I added a twist and will be trying to add more**.
-Snoopy’s Hub is a clean, modern homepage that includes tools, games, and useful features in one place.
+Snoopy’s Hub is a clean, modern homepage that includes tools, games, and useful features in one place. And mine is just a cheap rip off-lol
 
 ---
 
