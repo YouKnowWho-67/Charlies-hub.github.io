@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Verification Logs</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #080808;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .box {
+            background: #111;
+            border: 1px solid #292929;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,.4);
+            animation: fadeIn .5s ease;
+        }
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #888;
+            margin-bottom: 25px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 12px;
+            background: #181818;
+            border: 1px solid #333;
+            border-radius: 10px;
+            color: white;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #666;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: white;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        .error {
+            color: #ff5555;
+            margin-top: 12px;
+            display: none;
+        }
+
+        .log {
+            background: #181818;
+            border: 1px solid #292929;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 12px;
+        }
+
+        .ip {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .time {
+            color: #888;
+            margin-top: 6px;
+            font-size: 14px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .back {
+            background: #1c1c1c;
+            color: white;
+            margin-top: 12px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LOGIN -->
+
+    <div class="box" id="loginBox">
+
+        <h1>Admin Login</h1>
+
+        <p class="subtitle">
+            Enter your credentials to view verification logs.
+        </p>
+
+        <input
+            type="email"
+            id="email"
+            placeholder="Email"
+        >
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Password"
+        >
+
+        <button onclick="login()">
+            Login
+        </button>
+
+        <div class="error" id="error">
+            Invalid email or password.
+        </div>
+
+    </div>
+
+
+    <!-- LOGS -->
+
+    <div class="box hidden" id="logsBox">
+
+        <h1>Verification Logs</h1>
+
+        <p class="subtitle">
+            Saved verification attempts
+        </p>
+
+        <div id="logs"></div>
+
+        <button class="back" onclick="location.href='index.html'">
+            Back
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function login() {
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    /*
+        Replace these with your credentials.
+    */
+
+    const validLogin =
+        (email === "s-wyattrosborne@halifax.k12.va.us
+" &&
+         password === "Robert2012!@?");
+
+    if (!validLogin) {
+
+        document.getElementById("error").style.display = "block";
+
+        return;
+    }
+
+    document.getElementById("loginBox")
+        .classList.add("hidden");
+
+    document.getElementById("logsBox")
+        .classList.remove("hidden");
+
+    loadLogs();
+
+}
+
+
+function loadLogs() {
+
+    const container = document.getElementById("logs");
+
+    const logs = JSON.parse(
+        localStorage.getItem("verificationLogs") || "[]"
+    );
+
+    if (logs.length === 0) {
+
+        container.innerHTML =
+            "<p style='color:#888'>No verification logs yet.</p>";
+
+        return;
+    }
+
+    container.innerHTML = "";
+
+    // Newest first
+    logs.reverse().forEach(log => {
+
+        const element = document.createElement("div");
+
+        element.className = "log";
+
+        element.innerHTML = `
+            <div class="ip">
+                IP: ${escapeHTML(log.ip)}
+            </div>
+
+            <div class="time">
+                ${escapeHTML(log.time)}
+            </div>
+        `;
+
+        container.appendChild(element);
+
+    });
+
+}
+
+
+function escapeHTML(text) {
+
+    const div = document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+</script>
+
+</body>
+</html>
